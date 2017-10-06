@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="model" default="$(find omni_test)/urdf/robot.urdf.xacro"/>
+  <arg name="gui" default="true" />
+  <arg name="rvizconfig" default="$(find omni_test)/rviz/urdf.rviz" />
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+  <param name="use_gui" value="$(arg gui)"/>
+
+  <node name="joy_node" pkg="joy" type="joy_node" />
+  <node name="robot_commander" pkg="omni_test" type="robot_commander" />
+  <node name="omni_driver" pkg="omni_test" type="omni_driver" output="screen">
+    <remap from="twist" to="move_twist"/>
+    <remap from="wheel0" to="/my_robo/controller0/command"/>
+    <remap from="wheel1" to="/my_robo/controller1/command"/>
+    <remap from="wheel2" to="/my_robo/controller2/command"/>
+    <param name="wheel_base" value="0.0972"/>
+    <param name="wheel_radius" value="0.019"/>
+    <param name="linear_velocity" value="1.0"/>
+    <param name="angular_velocity" value="4.0"/>
+    <param name="wheel0" value="$(eval 3.1415/3)"/>
+    <param name="wheel1" value="$(eval 3.1415)"/>
+    <param name="wheel2" value="$(eval 5*3.1415/3)"/>
+  </node>
+  <node name="gun_driver" pkg="omni_test" type="gun_driver" output="screen">
+    <remap from="twist" to="gun_twist"/>
+    <remap from="yaw" to="/my_robo/controller3/command"/>
+    <remap from="pitch" to="/my_robo/controller4/command"/>
+    <param name="yaw_lower_limit" value="-0.65"/>
+    <param name="yaw_upper_limit" value="0.65"/>
+    <param name="pitch_lower_limit" value="-0.2"/>
+    <param name="pitch_upper_limit" value="0.2"/>
+    <param name="yaw_velocity" value="1.0"/>
+    <param name="pitch_velocity" value="1.0"/>
+
+  </node>
+</launch>
+

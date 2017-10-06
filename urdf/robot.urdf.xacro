@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot name="my_robo" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find omni_test)/urdf/common.urdf.xacro"/>
+  <xacro:include filename="$(find omni_test)/urdf/body.urdf.xacro"/>
+  <xacro:include filename="$(find omni_test)/urdf/wheel.urdf.xacro"/>
+  <xacro:include filename="$(find omni_test)/urdf/gun.urdf.xacro"/>
+
+  <link name="base_link"/>
+
+  <xacro:body prefix="body0" parent="base_link" />
+
+  <xacro:omni_wheel prefix="wheel0" parent="base_link" radius="0.075" dir="${pi/3}"   height="-0.022" />
+  <xacro:omni_wheel prefix="wheel1" parent="base_link" radius="0.075" dir="${pi}"     height="-0.022" />
+  <xacro:omni_wheel prefix="wheel2" parent="base_link" radius="0.075" dir="${5*pi/3}" height="-0.022" />
+<!--
+  <xacro:gun_tullet prefix="gun0" parent="base_link" pos_x="0.010" pos_z="0.038" />
+-->
+  <!-- ===============  Gazebo =============== -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>my_robo</robotNamespace>
+    </plugin>
+  </gazebo>
+
+</robot>
